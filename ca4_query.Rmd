@@ -24,9 +24,10 @@ library(dplyr)
 ```
 
 
-## Establish a connection to the MySQL DB
+
 
 ```{r include=FALSE}
+## Establish a connection to the MySQL DB
 conn = dbConnect(RMySQL::MySQL(),
                             dbname='sql8589433',
                             host='sql8.freesqldatabase.com',
@@ -35,24 +36,56 @@ conn = dbConnect(RMySQL::MySQL(),
                             password = rstudioapi::askForPassword("Enter database password"))
 ```
 
-## Test the remote connection
 
-```{r}
+
+```{r echo=FALSE}
+## Test the remote connection
 dbListTables(conn)
 dbListFields(conn, "Employees")
 ```
 
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{sql connection=conn, include=FALSE, output.var="projects"}
+## Use an SQL chunk to query and store the results
+SELECT * FROM Projects
+```
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+```{r echo=FALSE}
+## Accessing the results in an R chunk
+projects
+```
+
+##Selecting Distinct Values
+```{sql connection=conn, include=FALSE, output.var="disjobs"}
+## Use an SQL chunk to query and store the results
+SELECT DISTINCT Employees_employeeName FROM ProjectJobs
+```
+
+```{r echo=FALSE}
+## Accessing the results of projects_daterange
+##projects_daterange
+
+knitr::kable(head(disjobs), "simple")
+```
 
 
+##Selecting Across Date Range
+```{sql connection=conn, include=FALSE, output.var="projects_daterange"}
+## Use an SQL chunk to query and store the results
+SELECT projectID,projectName,startDate,finishDate FROM Projects WHERE startDate > "2023-01-01" && startDate < "2023-01-17"
+```
 
+```{r echo=FALSE}
+## Accessing the results of projects_daterange
+##projects_daterange
+
+knitr::kable(head(projects_daterange[, 1:4]), "simple")
+```
+
+
+```{r include=FALSE}
 ## Do NOT forget to disconnect - otherwise we may hit a remote connection limit
 
-```{r}
 dbDisconnect(conn)
 ```
