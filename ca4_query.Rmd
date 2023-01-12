@@ -1,0 +1,58 @@
+---
+title: "Charlie Duff ca4_query"
+output: pdf_document
+date: "2023-01-12"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+## Download and load libraries
+
+if(!require("DBI"))
+  install.packages("DBI")
+if(!require("dplyr"))
+  install.packages("dplyr")
+# if(!require("readr"))
+#   install.packages("readr")
+
+library(DBI)
+#library(readr)
+library(dplyr)
+
+
+```
+
+
+## Establish a connection to the MySQL DB
+
+```{r include=FALSE}
+conn = dbConnect(RMySQL::MySQL(),
+                            dbname='sql8589433',
+                            host='sql8.freesqldatabase.com',
+                            port=3306,
+                            user='sql8589433',
+                            password = rstudioapi::askForPassword("Enter database password"))
+```
+
+## Test the remote connection
+
+```{r}
+dbListTables(conn)
+dbListFields(conn, "Employees")
+```
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+
+
+## Do NOT forget to disconnect - otherwise we may hit a remote connection limit
+
+```{r}
+dbDisconnect(conn)
+```
