@@ -1,6 +1,6 @@
 ---
 title: "Data Analyitics and Immersive Enviroments CA4"
-subtitle: "Generate SQLite File"
+subtitle: "Generate SQLite File & E-R Diagram"
 author: "Charlie Duff"
 output: pdf_document
 date: "2023-01-13"
@@ -30,6 +30,9 @@ library(dplyr)
 
 conn <- dbConnect(RSQLite::SQLite(), "daie_ca4_data.sqlite")
 ```
+
+![E-R Diagram]("DA_CA4_ER_Diagram.PNG")
+
 
 ```{r include=FALSE}
 # Create Employees table

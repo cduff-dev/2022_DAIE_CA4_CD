@@ -1,6 +1,6 @@
 ---
 title: "Data Analyitics and Immersive Enviroments CA4"
-subtitle: "Query SQLite Database & E-R Diagram"
+subtitle: "Query SQL Database Online & E-R Diagram"
 author: "Charlie Duff"
 output: pdf_document
 date: "2023-01-13"
@@ -30,7 +30,12 @@ library(dplyr)
 
 ```{r include=FALSE}
 ## Establish a connection to the MySQL DB
-conn <- dbConnect(RSQLite::SQLite(), "daie_ca4_data.sqlite")
+conn = dbConnect(RMySQL::MySQL(),
+                            dbname='sql8589433',
+                            host='sql8.freesqldatabase.com',
+                            port=3306,
+                            user='sql8589433',
+                            password = rstudioapi::askForPassword("Enter database password"))
 ```
 
 ![E-R Diagram]("DA_CA4_ER_Diagram.PNG")
@@ -44,6 +49,7 @@ dbListFields(conn, "Employees")
 
 Select Everything from Projects Table
 ```{sql connection=conn, include=FALSE, output.var="projects"}
+## Use an SQL chunk to query and store the results
 SELECT * FROM Projects
 ```
 
@@ -54,7 +60,7 @@ knitr::kable(head(projects), "simple")
 
 Selecting Distinct Values
 ```{sql connection=conn, include=FALSE, output.var="disjobs"}
-
+## Use an SQL chunk to query and store the results
 SELECT DISTINCT Employees_employeeName FROM ProjectJobs
 ```
 
@@ -65,9 +71,9 @@ SELECT DISTINCT Employees_employeeName FROM ProjectJobs
 knitr::kable(head(disjobs), "simple")
 ```
 
-Selecting by Employee ID (ID greather than 2)
+Selecting by Employee ID
 ```{sql connection=conn, include=FALSE, output.var="employeeIDRange"}
-
+## Use an SQL chunk to query and store the results
 SELECT * FROM Employees WHERE employeeID > 2
 ```
 
@@ -80,7 +86,8 @@ knitr::kable(head(employeeIDRange[, 1:3]), "simple")
 
 Selecting Across Date Range (Start date > 01-01-2023 && <17-01-2023)
 ```{sql connection=conn, include=FALSE, output.var="projects_daterange"}
-SELECT projectID,projectName,startDate,finishDate FROM Projects WHERE startDate > "2023-01-01" AND startDate < "2023-01-17"
+## Use an SQL chunk to query and store the results
+SELECT projectID,projectName,startDate,finishDate FROM Projects WHERE startDate > "2023-01-01" && startDate < "2023-01-17"
 ```
 
 ```{r echo=FALSE}
@@ -92,6 +99,7 @@ knitr::kable(head(projects_daterange[, 1:4]), "simple")
 
 Selecting Using Inner Join 
 ```{sql connection=conn, include=FALSE, output.var="projectsassetsJoin"}
+## Use an SQL chunk to query and store the results
 SELECT Projects.projectName, ProjectAssets.assetName
 FROM ProjectAssets
 INNER JOIN Projects ON Projects.projectID = ProjectAssets.Projects_projectID
@@ -107,6 +115,7 @@ knitr::kable(head(projectsassetsJoin[, 1:2]), "simple")
 
 Selecting Using Subselect (Asset ID greater than 1 and library ID less than 5)
 ```{sql connection=conn, include=FALSE, output.var="projectsassetsSubselect"}
+## Use an SQL chunk to query and store the results
 Select * From ProjectAssets where assetID > 1 AND Library_libraryID < (Select libraryID from Library where assetName = "World")
 ```
 
