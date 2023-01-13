@@ -1,0 +1,235 @@
+---
+title: "Data Analyitics and Immersive Enviroments CA4"
+subtitle: "Generate SQLite File"
+author: "Charlie Duff"
+output: pdf_document
+date: "2023-01-13"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+## Download and load libraries
+
+if(!require("DBI"))
+  install.packages("DBI")
+if(!require("dplyr"))
+  install.packages("dplyr")
+# if(!require("readr"))
+#   install.packages("readr")
+
+library(DBI)
+#library(readr)
+library(dplyr)
+
+
+```
+
+```{r include=FALSE}
+# Connect (and create) a new local SQLite DB
+
+conn <- dbConnect(RSQLite::SQLite(), "daie_ca4_data.sqlite")
+```
+
+```{r include=FALSE}
+# Create Employees table
+
+dbExecute(conn, "CREATE TABLE Employees (
+   employeeID int NOT NULL,
+   employeeName varchar(128) NOT NULL,
+   job varchar(128) NOT NULL,
+   CONSTRAINT Employees_pk PRIMARY KEY (employeeID)
+);")
+```
+
+
+```{r include=FALSE}
+## Insert into Employees table
+
+dbExecute(conn, "INSERT INTO Employees (employeeID,employeeName, job)
+VALUES ('1', 'John Smith', '3D Artist');")
+
+dbExecute(conn, "INSERT INTO Employees (employeeID,employeeName, job)
+VALUES ('2', 'Mary Meade', 'Programmer');")
+
+dbExecute(conn, "INSERT INTO Employees (employeeID,employeeName, job)
+VALUES ('3', 'Anna Williams', 'Sound Design');")
+
+dbExecute(conn, "INSERT INTO Employees (employeeID,employeeName, job)
+VALUES ('4', 'Bill Summers', '2D Artist');")
+```
+
+```{r include=FALSE}
+dbExecute(conn, "CREATE TABLE Projects (
+   projectID int NOT NULL,
+   projectName varchar(128) NOT NULL,
+   startDate date NOT NULL,
+   finishDate date NOT NULL,
+   CONSTRAINT Projects_pk PRIMARY KEY (projectID)
+)")
+```
+
+```{r include=FALSE}
+## Insert into Projects table
+
+dbExecute(conn, "INSERT INTO Projects (projectID, projectName, startDate, finishDate)
+VALUES ('1', 'BestGame', '2023-01-13', '2023-01-18');")
+
+dbExecute(conn, "INSERT INTO Projects (projectID, projectName, startDate, finishDate)
+VALUES ('2', 'BestGame 2: The Sequel', '2023-01-19', '2023-01-25');")
+
+dbExecute(conn, "INSERT INTO Projects (projectID, projectName, startDate, finishDate)
+VALUES ('3', 'Amazing platformer', '2023-01-15', '2023-01-20');")
+
+```
+
+
+```{r include=FALSE}
+dbExecute(conn, "CREATE TABLE Library (
+   libraryID int NOT NULL,
+   libraryType varchar(128) NOT NULL,
+   assetName varchar(128) NOT NULL,
+   CONSTRAINT Library_pk PRIMARY KEY (libraryID)
+);")
+```
+
+```{r include=FALSE}
+## Insert into Library table
+
+dbExecute(conn, "INSERT INTO Library (libraryID, libraryType, assetName)
+VALUES ('1', '3D Character', 'Main Character');")
+
+dbExecute(conn, "INSERT INTO Library (libraryID, libraryType, assetName)
+VALUES ('2', '3D Character', 'Enemy Character');")
+
+dbExecute(conn, "INSERT INTO Library (libraryID, libraryType, assetName)
+VALUES ('3', '3D Prop', 'Chair');")
+
+dbExecute(conn, "INSERT INTO Library (libraryID, libraryType, assetName)
+VALUES ('4', '3D Prop', 'Table');")
+
+dbExecute(conn, "INSERT INTO Library (libraryID, libraryType, assetName)
+VALUES ('5', 'Concept Art', 'World');")
+
+```
+
+```{r include=FALSE}
+dbExecute(conn, "CREATE TABLE ProjectAssets (
+   assetID int NOT NULL,
+   Projects_projectID int NOT NULL,
+   projectName varchar(128) NOT NULL,
+   assetName varchar(128) NOT NULL,
+   Library_libraryID int NOT NULL,
+   libraryType varchar(128) NOT NULL,
+   startDate date NOT NULL,
+   finishDate date NULL,
+   CONSTRAINT ProjectAssets_pk PRIMARY KEY (assetID)
+);")
+```
+
+```{r include=FALSE}
+## Insert into ProjectAssets table
+
+dbExecute(conn, "INSERT INTO ProjectAssets (assetID, Projects_projectID, projectName, assetName, Library_libraryID, libraryType, startDate, finishDate)
+VALUES ('1', '1', 'Best Game', 'Main character', '1', '3D Character', '2023-01-13', '2023-01-14');")
+
+dbExecute(conn, "INSERT INTO ProjectAssets (assetID, Projects_projectID, projectName, assetName, Library_libraryID, libraryType, startDate, finishDate)
+VALUES ('2', '1', 'Best Game', 'Enemy character', '2', '3D Character', '2023-01-13', '2023-01-14');")
+
+dbExecute(conn, "INSERT INTO ProjectAssets (assetID, Projects_projectID, projectName, assetName, Library_libraryID, libraryType, startDate, finishDate)
+VALUES ('3', '2', 'Best Game 2: The Sequel', 'Chair', '3', '3D Prop', '2023-01-18', '2023-01-19');")
+
+dbExecute(conn, "INSERT INTO ProjectAssets (assetID, Projects_projectID, projectName, assetName, Library_libraryID, libraryType, startDate, finishDate)
+VALUES ('4', '3', 'Amazing platformer', 'Table', '4', '3D Prop', '2023-01-19', '2023-01-20');")
+
+dbExecute(conn, "INSERT INTO ProjectAssets (assetID, Projects_projectID, projectName, assetName, Library_libraryID, libraryType, startDate, finishDate)
+VALUES ('5', '3', 'Amazing platformer', 'World', '5', 'Concept Art', '2023-01-20', '2023-01-20');")
+
+```
+
+
+```{r include=FALSE}
+dbExecute(conn, "CREATE TABLE ProjectJobs (
+   Employees_employeeID int NOT NULL,
+   Employees_employeeName varchar(128) NOT NULL,
+   projectJobID int NOT NULL,
+   projectJobName varchar(400) NOT NULL,
+   startDate date NOT NULL,
+   finishDate date NOT NULL,
+   CONSTRAINT ProjectJobs_pk PRIMARY KEY (projectJobID)
+);")
+```
+
+```{r include=FALSE}
+## Insert into ProjectJobs table
+
+dbExecute(conn, "INSERT INTO ProjectJobs (Employees_employeeID, Employees_employeeName, projectJobID, projectJobName, startDate, finishDate)
+VALUES ('1', 'John Smith', '1', '3D Chracter Model - Main character', '2023-01-13', '2023-01-14');")
+
+dbExecute(conn, "INSERT INTO ProjectJobs (Employees_employeeID, Employees_employeeName, projectJobID, projectJobName, startDate, finishDate)
+VALUES ('1', 'John Smith', '2', '3D Chracter Model - Enemy character', '2023-01-14', '2023-01-15');")
+
+dbExecute(conn, "INSERT INTO ProjectJobs (Employees_employeeID, Employees_employeeName, projectJobID, projectJobName, startDate, finishDate)
+VALUES ('2', 'Mary Meade', '3', 'Programming - Hit Detection', '2023-01-13', '2023-01-15');")
+
+```
+
+
+##print Employees
+```{sql connection=conn, include=FALSE, output.var="employees"}
+SELECT * FROM Employees
+```
+
+```{r echo=FALSE}
+## Accessing the results in an R chunk
+knitr::kable(head(employees), "simple")
+```
+
+##print Projects
+```{sql connection=conn, include=FALSE, output.var="projects"}
+SELECT * FROM Projects
+```
+
+```{r echo=FALSE}
+## Accessing the results in an R chunk
+knitr::kable(head(projects), "simple")
+```
+
+##print Library
+```{sql connection=conn, include=FALSE, output.var="library"}
+SELECT * FROM Library
+```
+
+```{r echo=FALSE}
+## Accessing the results in an R chunk
+knitr::kable(head(library), "simple")
+```
+
+##print ProjectAssets
+```{sql connection=conn, include=FALSE, output.var="projectassets"}
+SELECT * FROM ProjectAssets
+```
+
+```{r echo=FALSE}
+## Accessing the results in an R chunk
+knitr::kable(head(projectassets[, 1:8]), "pipe")
+```
+
+##print ProjectJobs
+```{sql connection=conn, include=FALSE, output.var="projectjobs"}
+SELECT * FROM ProjectJobs
+```
+
+```{r echo=FALSE}
+## Accessing the results in an R chunk
+knitr::kable(head(projectjobs), "pipe")
+```
+
+```{r include=FALSE}
+# Do NOT forget to disconnect - otherwise we may hit a remote connection limit
+
+dbDisconnect(conn)
+```
+
+
+

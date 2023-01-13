@@ -1,7 +1,9 @@
 ---
-title: "Charlie Duff ca4_query"
+title: "Data Analyitics and Immersive Enviroments CA4"
+subtitle: "Query SQLite File"
+author: "Charlie Duff"
 output: pdf_document
-date: "2023-01-12"
+date: "2023-01-13"
 ---
 
 ```{r setup, include=FALSE}
