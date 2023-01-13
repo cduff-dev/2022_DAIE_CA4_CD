@@ -1,0 +1,61 @@
+---
+title: "Data Analyitics and Immersive Enviroments CA4"
+subtitle: "Linear Regression"
+author: "Charlie Duff"
+output: pdf_document
+date: "2023-01-13"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+## Download and load libraries
+
+if(!require("DBI"))
+  install.packages("DBI")
+if(!require("dplyr"))
+  install.packages("dplyr")
+# if(!require("readr"))
+#   install.packages("readr")
+
+library(DBI)
+#library(readr)
+library(dplyr)
+library(tidyverse)
+
+```
+
+
+
+Independent Variable = Gaming Platform
+
+Dependent Variable = Avg Monthly Hours Gaming
+
+
+```{r Load Data, echo=FALSE}
+file_name = "amalgamated_game_survey_250_2022.csv"
+lr_data <- read.csv(file_name)
+
+##summary(lr_data)
+
+samp200 <- lr_data[sample(nrow(lr_data), 200), ]
+
+##summary(samp200)
+
+##hist(samp200$avg_monthly_hrs_gaming)
+
+surveys_plot <- ggplot(data = samp200, aes(x = gaming_platform, y = avg_monthly_hrs_gaming)) +
+  geom_point()
+
+surveys_plot +
+    geom_point()
+
+surveys_plot +
+    geom_boxplot()
+
+surveys_plot +
+    geom_line()
+
+```
+
+From observing the data we can see a clear change in the average number of monthly hours played depending on what platform the surveyee was playing. In particular the box plot gives us greater understanding on where the averages and 1st and 3rd quartile ranges lie. The results show us than on average PC gamer's spend the most time gaming in a month with the mean being tied with VR and the upper quartile being higher than all other platforms. This does not suggest that PC is the most popular platform, just that on average PC players spend longer amounts of time playing games than other platforms. We see the largest amount of variance in the VR platform and this to be expected due to the general reactions to VR. VR is not a platform that everyone may be comfortable with playing for long periods of time due factors such as fatigue or motion sickness. VR is also currently still a new and expensive technology so those that may want to use and may be able to use it for long sessions may still be priced out of the platform thus may be currently contributing to another platform.Handheld appears to have the most consistent results of all the platforms with many surveyee's averaging 18-20 hours of monthly playtime.
