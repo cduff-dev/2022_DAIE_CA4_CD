@@ -31,6 +31,7 @@ library(dplyr)
 conn <- dbConnect(RSQLite::SQLite(), "daie_ca4_data.sqlite")
 ```
 
+<!-- Adds Image to R Markdown File -->
 ![E-R Diagram]("DA_CA4_ER_Diagram.PNG")
 
 
@@ -47,7 +48,7 @@ dbExecute(conn, "CREATE TABLE Employees (
 
 
 ```{r include=FALSE}
-## Insert into Employees table
+## Insert data into Employees table
 
 dbExecute(conn, "INSERT INTO Employees (employeeID,employeeName, job)
 VALUES ('1', 'John Smith', '3D Artist');")
@@ -63,6 +64,7 @@ VALUES ('4', 'Bill Summers', '2D Artist');")
 ```
 
 ```{r include=FALSE}
+## Create Projects table
 dbExecute(conn, "CREATE TABLE Projects (
    projectID int NOT NULL,
    projectName varchar(128) NOT NULL,
@@ -88,6 +90,7 @@ VALUES ('3', 'Amazing platformer', '2023-01-15', '2023-01-20');")
 
 
 ```{r include=FALSE}
+## Create Library table
 dbExecute(conn, "CREATE TABLE Library (
    libraryID int NOT NULL,
    libraryType varchar(128) NOT NULL,
@@ -117,6 +120,7 @@ VALUES ('5', 'Concept Art', 'World');")
 ```
 
 ```{r include=FALSE}
+## Create ProjectAssets table
 dbExecute(conn, "CREATE TABLE ProjectAssets (
    assetID int NOT NULL,
    Projects_projectID int NOT NULL,
@@ -152,6 +156,7 @@ VALUES ('5', '3', 'Amazing platformer', 'World', '5', 'Concept Art', '2023-01-20
 
 
 ```{r include=FALSE}
+## Create ProjectJobs table
 dbExecute(conn, "CREATE TABLE ProjectJobs (
    Employees_employeeID int NOT NULL,
    Employees_employeeName varchar(128) NOT NULL,
@@ -180,6 +185,9 @@ VALUES ('2', 'Mary Meade', '3', 'Programming - Hit Detection', '2023-01-13', '20
 
 ##print Employees
 ```{sql connection=conn, include=FALSE, output.var="employees"}
+/*Select all the columns
+of all the records
+in the Employees table:*/
 SELECT * FROM Employees
 ```
 
@@ -190,6 +198,9 @@ knitr::kable(head(employees), "simple")
 
 ##print Projects
 ```{sql connection=conn, include=FALSE, output.var="projects"}
+/*Select all the columns
+of all the records
+in the Projects table:*/
 SELECT * FROM Projects
 ```
 
@@ -200,6 +211,9 @@ knitr::kable(head(projects), "simple")
 
 ##print Library
 ```{sql connection=conn, include=FALSE, output.var="library"}
+/*Select all the columns
+of all the records
+in the Library table:*/
 SELECT * FROM Library
 ```
 
@@ -210,6 +224,9 @@ knitr::kable(head(library), "simple")
 
 ##print ProjectAssets
 ```{sql connection=conn, include=FALSE, output.var="projectassets"}
+/*Select all the columns
+of all the records
+in the ProjectAssets table:*/
 SELECT * FROM ProjectAssets
 ```
 
@@ -220,6 +237,9 @@ knitr::kable(head(projectassets[, 1:8]), "pipe")
 
 ##print ProjectJobs
 ```{sql connection=conn, include=FALSE, output.var="projectjobs"}
+/*Select all the columns
+of all the records
+in the ProjectJobs table:*/
 SELECT * FROM ProjectJobs
 ```
 

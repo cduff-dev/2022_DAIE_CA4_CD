@@ -37,7 +37,7 @@ conn = dbConnect(RMySQL::MySQL(),
                             user='sql8589433',
                             password = rstudioapi::askForPassword("Enter database password"))
 ```
-
+<!-- Adds Image to R Markdown File -->
 ![E-R Diagram]("DA_CA4_ER_Diagram.PNG")
 
 ```{r include=FALSE}

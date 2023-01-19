@@ -33,6 +33,7 @@ library(dplyr)
 conn <- dbConnect(RSQLite::SQLite(), "daie_ca4_data.sqlite")
 ```
 
+<!-- Adds Image to R Markdown File -->
 ![E-R Diagram]("DA_CA4_ER_Diagram.PNG")
 
 ```{r include=FALSE}
@@ -44,6 +45,9 @@ dbListFields(conn, "Employees")
 
 Select Everything from Projects Table
 ```{sql connection=conn, include=FALSE, output.var="projects"}
+/*Select all the columns
+of all the records
+in the Projects table:*/
 SELECT * FROM Projects
 ```
 
@@ -54,7 +58,9 @@ knitr::kable(head(projects), "simple")
 
 Selecting Distinct Values
 ```{sql connection=conn, include=FALSE, output.var="disjobs"}
-
+/*Select all the columns
+of distinct  employee name values
+in the ProjectsJobs table:*/
 SELECT DISTINCT Employees_employeeName FROM ProjectJobs
 ```
 
@@ -67,7 +73,9 @@ knitr::kable(head(disjobs), "simple")
 
 Selecting by Employee ID (ID greather than 2)
 ```{sql connection=conn, include=FALSE, output.var="employeeIDRange"}
-
+/*Select all the columns
+of employees where the employee ID 
+is greater than 2:*/
 SELECT * FROM Employees WHERE employeeID > 2
 ```
 
@@ -80,6 +88,9 @@ knitr::kable(head(employeeIDRange[, 1:3]), "simple")
 
 Selecting Across Date Range (Start date > 01-01-2023 && <17-01-2023)
 ```{sql connection=conn, include=FALSE, output.var="projects_daterange"}
+/*Select projectID, name, start, and finish date from projects 
+where the start date is greater than january 1st 2023 and less 
+than january 17th 2023:*/
 SELECT projectID,projectName,startDate,finishDate FROM Projects WHERE startDate > "2023-01-01" AND startDate < "2023-01-17"
 ```
 
@@ -92,6 +103,8 @@ knitr::kable(head(projects_daterange[, 1:4]), "simple")
 
 Selecting Using Inner Join 
 ```{sql connection=conn, include=FALSE, output.var="projectsassetsJoin"}
+/*Select project name and asset name from project assets 
+where the project id  = the project assets project id using inner join:*/
 SELECT Projects.projectName, ProjectAssets.assetName
 FROM ProjectAssets
 INNER JOIN Projects ON Projects.projectID = ProjectAssets.Projects_projectID
@@ -107,6 +120,8 @@ knitr::kable(head(projectsassetsJoin[, 1:2]), "simple")
 
 Selecting Using Subselect (Asset ID greater than 1 and library ID less than 5)
 ```{sql connection=conn, include=FALSE, output.var="projectsassetsSubselect"}
+/*Select all from project assets 
+where the asset id is greater than 1 and where the library ID is greater than the Library id of the row that has the asset name "World":*/
 Select * From ProjectAssets where assetID > 1 AND Library_libraryID < (Select libraryID from Library where assetName = "World")
 ```
 

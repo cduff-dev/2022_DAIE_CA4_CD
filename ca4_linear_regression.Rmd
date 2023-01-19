@@ -33,20 +33,25 @@ Dependent Variable = Avg Monthly Hours Gaming
 
 
 ```{r Load Data, echo=FALSE}
+##Loading in the sample data
 file_name = "amalgamated_game_survey_250_2022.csv"
 lr_data <- read.csv(file_name)
 
 ##summary(lr_data)
 
+## Getting 200 random samples of data and storing it in a dataset
 samp200 <- lr_data[sample(nrow(lr_data), 200), ]
 
 ##summary(samp200)
 
 ##hist(samp200$avg_monthly_hrs_gaming)
 
+##storing the plot of the data. Plotting gaming platform against average monthly hours gaming using ggplot
 surveys_plot <- ggplot(data = samp200, aes(x = gaming_platform, y = avg_monthly_hrs_gaming)) +
   geom_point()
 
+
+##plotting using different plot type ( box plot, dot plot, )
 surveys_plot +
     geom_point()
 
@@ -55,6 +60,9 @@ surveys_plot +
 
 surveys_plot +
     geom_line()
+
+surveys_plot +
+    geom_step()
 
 ```
 
